@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static Coffee_Please.IngredientFactory;
 
 namespace Coffee_Please
 {
@@ -12,18 +13,30 @@ namespace Coffee_Please
         Shot, Water, Milk, Ice, Chocolate, Strawberry
     }
 
-
     public class IngredientFactory //재료 객체 생성을 전담할 팩토리 클래스.
     {
-        public static Dictionary<IngredientType, Ingredient> Ingredients { get; set; } 
-        public static List<PlusIngredient> PlusIngredients { get; set; }
+        public static Dictionary<IngredientType, Ingredient> Ingredients { get; set; }
+
+        public static List<IngredientType> PlusType = new List<IngredientType>// 주문 시 추가 가능한 재료 지정은 여기로!
+        {IngredientType.Shot, IngredientType.Ice, IngredientType.Chocolate};
+
+        public static List<Ingredient> PlusIngredients { get; set; }
+
+        public IngredientFactory()
+        {
+            Ingredients = new Dictionary<IngredientType, Ingredient>();
+            PlusIngredients = new List<Ingredient>();
+        }
 
         public class Ingredient //재료 클래스.
         {
             public IngredientType Type { get; set; }
+
+            public string Name { get; set; }
             public int Price { get; set; }
 
             public Queue<ConsoleKey> Command { get; set; }
+
 
             public virtual void PutIngredient() //만드는 음료에 재료를 추가하는 매서드.
             {
@@ -39,23 +52,64 @@ namespace Coffee_Please
             }
         }
 
-        public void MakeAllIngredients()
+        public void MakeAllIngredients() //재료 객체 종류별로 생성하는 매서드
         {
-            for (int i = 0; i < Enum.GetValues(typeof(IngredientType)).Length; i++)
-            {
-                Ingredients.Add((IngredientType)i, MakeIngredient((IngredientType)i));
+            for (int i = 0; i < Enum.GetValues(typeof(IngredientType)).Length; i++) //모든 객체 타입을 순회하며
+            {                
+                Ingredients.Add((IngredientType)i, MakeIngredient((IngredientType)i)); //재료 객체 생성하여 재료 목록에 추가.
+                if (MakeIngredient((IngredientType)i) is PlusIngredient) //해당 타입이 추가재료 타입에도 있다면
+                {
+                    PlusIngredients.Add(MakeIngredient((IngredientType)i)); //추가재료 목록에도 추가.
+                }
             }
         }
 
 
         private Ingredient MakeIngredient(IngredientType type) //재료 타입 입력하면 가격과 커맨드 할당해주는 매서드.
         {
-            Ingredient ingredient = new Ingredient();
+            Ingredient ingredient;
+            if (PlusType.Contains(type))
+            {
+                ingredient = new PlusIngredient();
+            }
+            else
+            {
+                ingredient = new Ingredient();
+            }
+            ingredient.Type = type;
             ingredient.Price = SetPrice(type);
-            ingredient.Command = SetCommand(type);            
+            ingredient.Name = SetName(type);
+            ingredient.Command = SetCommand(type);
             return ingredient;
         }
+        private string SetName(IngredientType type)//재료에 출력용 이름 할당하는 매서드(재료의 출력용 텍스트 설정 및 수정은 여기로!)
+        {
+            string name = "";
 
+            switch (type)
+            {
+                case IngredientType.Shot:
+                    name = "샷 추가";
+                    break;
+                case IngredientType.Water:
+                    name = "물";
+                    break;
+                case IngredientType.Milk:
+                    name = "우유";
+                    break;
+                case IngredientType.Ice:
+                    name = "얼음";
+                    break;
+                case IngredientType.Chocolate:
+                    name = "초콜릿";
+                    break;
+                case IngredientType.Strawberry:
+                    name = "딸기";
+                    break;
+            }
+
+            return name;
+        }
         private int SetPrice(IngredientType type)//재료에 가격 할당하는 매서드(재료 가격 설정 및 수정은 여기로!)
         {
             Ingredient ingredient = new Ingredient();
@@ -87,12 +141,12 @@ namespace Coffee_Please
         private Queue<ConsoleKey> SetCommand(IngredientType type) //재료에 키 커맨드 할당하는 매서드(재료 커맨드 설정 및 수정은 여기로!)
         {
             Queue<ConsoleKey> command = new Queue<ConsoleKey>();
-            
+
             switch (type)
             {
                 case IngredientType.Shot: //샷 커맨드 : 상 하
                     command.Enqueue(ConsoleKey.UpArrow);
-                    command.Enqueue(ConsoleKey.DownArrow);                    
+                    command.Enqueue(ConsoleKey.DownArrow);
 
                     break;
                 case IngredientType.Water: //물 커맨드 : 좌 우

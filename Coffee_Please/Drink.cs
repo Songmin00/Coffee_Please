@@ -14,7 +14,8 @@ namespace Coffee_Please
         }
         public class Drink
         {
-            public DrinkType type { get; set; }
+            public DrinkType Type { get; set; }
+            public string Name { get; set; }
             public List<IngredientFactory.Ingredient> Recipe { get; set; }
             public int Price { get; set; }
         }
@@ -22,22 +23,47 @@ namespace Coffee_Please
         {
             for (int i = 0; i < Enum.GetValues(typeof(DrinkType)).Length; i++)
             {
-                Customer.Orderables.Add(MakeDrink((DrinkType)i));                
+                Customer.Orderables.Add(MakeDrink((DrinkType)i));
             }
         }
 
         public Drink MakeDrink(DrinkType type)
         {
             Drink drink = new Drink();
+            drink.Type = type;
+            drink.Name = SetName(type);
             drink.Recipe = SetRecipe(type);
             drink.Price = SetPrice(drink);
             return drink;
         }
 
+        public string SetName(DrinkType type) //음료 레시피에 재료 할당하는 매서드(음료 레시피 설정 및 수정은 여기로!).
+        {            
+            string name = "";
+            switch (type)
+            {
+                case DrinkType.Espresso:
+                    name = "에스프레소";
+                    break;
+                case DrinkType.Americano:
+                    name = "아메리카노";
+                    break;
+                case DrinkType.CaffeLatte:
+                    name = "카페라떼";
+                    break;
+                case DrinkType.ChocolateLatte:
+                    name = "초콜릿라떼";
+                    break;
+                case DrinkType.StrawberryLatte:
+                    name = "딸기라떼";
+                    break;
+            }
+            return name;
+        }
+
         public List<IngredientFactory.Ingredient> SetRecipe(DrinkType type) //음료 레시피에 재료 할당하는 매서드(음료 레시피 설정 및 수정은 여기로!).
         {
             List<IngredientFactory.Ingredient> recipe = new List<IngredientFactory.Ingredient>();
-
             switch (type)
             {
                 case DrinkType.Espresso:
@@ -53,7 +79,7 @@ namespace Coffee_Please
                     break;
                 case DrinkType.ChocolateLatte:
                     recipe.Add(IngredientFactory.Ingredients[IngredientType.Chocolate]);
-                    recipe.Add(IngredientFactory.Ingredients[IngredientType.Milk]);                    
+                    recipe.Add(IngredientFactory.Ingredients[IngredientType.Milk]);
                     break;
                 case DrinkType.StrawberryLatte:
                     recipe.Add(IngredientFactory.Ingredients[IngredientType.Strawberry]);
