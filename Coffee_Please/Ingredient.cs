@@ -35,12 +35,12 @@ namespace Coffee_Please
             public string Name { get; set; }
             public int Price { get; set; }
 
-            public Queue<ConsoleKey> Command { get; set; }
+            public List<ConsoleKey> Command { get; set; }
 
 
             public virtual void PutIngredient() //만드는 음료에 재료를 추가하는 매서드.
             {
-
+                Console.WriteLine($"\n{Name} 넣겠습니다!");
             }
         }
 
@@ -48,7 +48,7 @@ namespace Coffee_Please
         {
             public override void PutIngredient()
             {
-
+                Console.WriteLine($"\n{Name} 넣겠습니다!");
             }
         }
 
@@ -138,40 +138,40 @@ namespace Coffee_Please
 
             return ingredient.Price;
         }
-        private Queue<ConsoleKey> SetCommand(IngredientType type) //재료에 키 커맨드 할당하는 매서드(재료 커맨드 설정 및 수정은 여기로!)
+        private List<ConsoleKey> SetCommand(IngredientType type) //재료에 키 커맨드 할당하는 매서드(재료 커맨드 설정 및 수정은 여기로!)
         {
-            Queue<ConsoleKey> command = new Queue<ConsoleKey>();
+            List<ConsoleKey> command = new List<ConsoleKey>();
 
             switch (type)
             {
                 case IngredientType.Shot: //샷 커맨드 : 상 하
-                    command.Enqueue(ConsoleKey.UpArrow);
-                    command.Enqueue(ConsoleKey.DownArrow);
+                    command.Add(ConsoleKey.UpArrow);
+                    command.Add(ConsoleKey.DownArrow);
 
                     break;
                 case IngredientType.Water: //물 커맨드 : 좌 우
-                    command.Enqueue(ConsoleKey.LeftArrow);
-                    command.Enqueue(ConsoleKey.RightArrow);
+                    command.Add(ConsoleKey.LeftArrow);
+                    command.Add(ConsoleKey.RightArrow);
 
                     break;
                 case IngredientType.Milk://우유 커맨드 : 좌 하 우
-                    command.Enqueue(ConsoleKey.LeftArrow);
-                    command.Enqueue(ConsoleKey.DownArrow);
-                    command.Enqueue(ConsoleKey.RightArrow);
+                    command.Add(ConsoleKey.LeftArrow);
+                    command.Add(ConsoleKey.DownArrow);
+                    command.Add(ConsoleKey.RightArrow);
                     break;
                 case IngredientType.Ice: //얼음 커맨드 : 상 상
-                    command.Enqueue(ConsoleKey.UpArrow);
-                    command.Enqueue(ConsoleKey.UpArrow);
+                    command.Add(ConsoleKey.UpArrow);
+                    command.Add(ConsoleKey.UpArrow);
                     break;
                 case IngredientType.Chocolate: //초콜릿 커맨드 : 좌 우 좌
-                    command.Enqueue(ConsoleKey.LeftArrow);
-                    command.Enqueue(ConsoleKey.RightArrow);
-                    command.Enqueue(ConsoleKey.LeftArrow);
+                    command.Add(ConsoleKey.LeftArrow);
+                    command.Add(ConsoleKey.RightArrow);
+                    command.Add(ConsoleKey.LeftArrow);
                     break;
                 case IngredientType.Strawberry: // 딸기 커맨드 : 우 좌 우
-                    command.Enqueue(ConsoleKey.RightArrow);
-                    command.Enqueue(ConsoleKey.LeftArrow);
-                    command.Enqueue(ConsoleKey.RightArrow);
+                    command.Add(ConsoleKey.RightArrow);
+                    command.Add(ConsoleKey.LeftArrow);
+                    command.Add(ConsoleKey.RightArrow);
                     break;
             }
 
