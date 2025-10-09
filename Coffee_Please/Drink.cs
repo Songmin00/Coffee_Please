@@ -16,7 +16,7 @@ namespace Coffee_Please
         {
             public DrinkType Type { get; set; }
             public string Name { get; set; }
-            public List<IngredientFactory.Ingredient> Recipe { get; set; }
+            public List<IngredientFactory.Ingredient> Recipe { get; set; } = new List<IngredientFactory.Ingredient>();
             public int Price { get; set; }
         }
         public void MakeFirstDayDrinks()//첫날 해금된 메뉴 주문가능목록에 넣기.

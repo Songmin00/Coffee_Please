@@ -24,7 +24,7 @@ namespace Coffee_Please
         public static void Order()
         {
             MakeDrinkToOrder();
-            MakeRequires();
+            MakeRequires();            
             Console.WriteLine($"{DrinkToOrder.Name} 하나 주세요.");            
             Console.WriteLine($"{Requirement.Name}도 추가해서요.");
 
@@ -41,16 +41,45 @@ namespace Coffee_Please
         {
             int a = Random.Next(0, IngredientFactory.PlusIngredients.Count);
             Requirement = IngredientFactory.PlusIngredients[a];
+            DrinkToOrder.Recipe.Add(Requirement);
         }
 
         public static void CheckMenu()
-        {
-
+        {           
+            bool isMatched = true; //틀린거 찾았나 표시할 bool 변수.
+            if (Player.Menu.Recipe.Count == DrinkToOrder.Recipe.Count) //메뉴의 재료 수가 주문 레시피의 재료 수와 같다면
+            {
+                
+                for (int i = 0; i < Player.Menu.Recipe.Count; i++) //메뉴 레시피 수만큼 재료를 순회하면서
+                {                    
+                    if (Player.Menu.Recipe[i].Type != DrinkToOrder.Recipe[i].Type) //두 재료의 타입이 다르면
+                    {
+                        isMatched = false; //다른거 찾았다고 표시하고 순회를 종료
+                        break;
+                    }
+                }
+                if (isMatched == true) //순회 끝난 후 틀린 게 없다면 발동
+                {
+                    Console.WriteLine("최고에요!");
+                    GiveMoney();
+                    Player.Menu.Recipe.Clear();
+                }
+                else
+                {
+                    Console.WriteLine("이게 뭐야?!");
+                    Player.Menu.Recipe.Clear();
+                }
+            }
+            else
+            {
+                Console.WriteLine("이게 뭐야?!");
+                Player.Menu.Recipe.Clear();
+            }
         }
 
         public static void GiveMoney()
         {
-
+            Player.Money += DrinkToOrder.Price;
         }
 
     }

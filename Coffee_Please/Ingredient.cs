@@ -39,6 +39,13 @@ namespace Coffee_Please
 
 
             public virtual void PutIngredient() //만드는 음료에 재료를 추가하는 매서드.
+            {                
+                Player.Menu.Recipe.Add(this);
+                Player.Money -= Price;
+                RenderIngredient();
+            }
+
+            public virtual void RenderIngredient()
             {
                 Console.WriteLine($"\n{Name} 넣겠습니다!");
             }
@@ -46,9 +53,9 @@ namespace Coffee_Please
 
         public class PlusIngredient : Ingredient //손님의 추가 요구사항에 해당하는 추가 재료 클래스.
         {
-            public override void PutIngredient()
+            public override void RenderIngredient()
             {
-                Console.WriteLine($"\n{Name} 넣겠습니다!");
+                Console.WriteLine($"\n{Name} 추가하겠습니다!");
             }
         }
 
