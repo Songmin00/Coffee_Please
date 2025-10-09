@@ -23,6 +23,11 @@ namespace Coffee_Please
             public List<IngredientFactory.Ingredient> Recipe { get; set; } = new List<IngredientFactory.Ingredient>();
             public int Price { get; set; }
 
+            public Drink() 
+            {
+                Recipe  = new List<IngredientFactory.Ingredient>();
+            }
+
             public string SetName(DrinkType type) //음료 레시피에 재료 할당하는 매서드(음료 레시피 설정 및 수정은 여기로!).
             {
                 string name = "";
@@ -57,6 +62,15 @@ namespace Coffee_Please
                         break;
                 }
                 return name;
+            }
+
+            public Drink MakeClone()
+            {
+                Drink drink = new Drink();
+                drink.Name = Name;
+                drink.Type = Type;
+                drink.Recipe = new List<IngredientFactory.Ingredient>(Recipe);
+                return drink;
             }
 
             public List<IngredientFactory.Ingredient> SetRecipe(DrinkType type) //음료 레시피에 재료 할당하는 매서드(음료 레시피 설정 및 수정은 여기로!).

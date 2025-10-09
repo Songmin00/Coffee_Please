@@ -42,6 +42,16 @@ namespace Coffee_Please
 
             public List<ConsoleKey> Command { get; set; }
 
+            public Ingredient MakeClone()
+            {
+                Ingredient ingredient = new Ingredient();
+                ingredient.Type = Type;
+                ingredient.Name = Name;
+                ingredient.Price = Price;
+                ingredient.Command = Command;
+                return ingredient;
+            }
+
 
             public virtual void PutIngredient() //만드는 음료에 재료를 추가하는 매서드.
             {                
@@ -60,7 +70,7 @@ namespace Coffee_Please
         {
             public override void RenderIngredient()
             {
-                Console.WriteLine($"\n{Name} 추가하겠습니다!");
+                Console.WriteLine($"\r{Name} 추가하겠습니다!");
             }
         }
 
@@ -101,7 +111,7 @@ namespace Coffee_Please
             switch (type)
             {
                 case IngredientType.Shot:
-                    name = "샷 추가";
+                    name = "에스프레소 샷";
                     break;
                 case IngredientType.Water:
                     name = "물";

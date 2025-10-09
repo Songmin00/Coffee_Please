@@ -37,7 +37,7 @@ namespace Coffee_Please
 
 
         public static void MakeDrinkToOrder()//주문가능목록에서 하나 랜덤으로 뽑아서 주문할 음료에 할당하는 매서드.(전체 음료 종류 수가 바뀔 시 여기를 변경해줘야 합니다!)
-        {
+        {            
             DrinkToOrder.Recipe.Clear();
             int orderLock = 0;//잠겨있는 메뉴 갯수(타입 기준 맨 뒤부터)
             switch (Gamemanager.Days)
@@ -50,12 +50,13 @@ namespace Coffee_Please
 
             }
             int i = Random.Next(0, Orderables.Count - orderLock);
-            DrinkToOrder = Orderables[i];
+            
+            DrinkToOrder = Orderables[i].MakeClone();
         }
 
         public static void MakeRequires()//추가재료목록에서 하나 랜덤으로 뽑아서 요구사항에 할당하는 매서드.(전체 추가 재료 종류 수가 바뀔 시 여기를 변경해줘야 합니다!)
         {            
-            Requirement = null;            
+            Requirement = null;
             int orderLock = 0;
             switch (Gamemanager.Days)
             {
@@ -66,7 +67,8 @@ namespace Coffee_Please
                 default: orderLock = 0; break;
             }
             int i = Random.Next(0, IngredientFactory.PlusIngredients.Count - orderLock);
-            Requirement = IngredientFactory.PlusIngredients[i];
+            Requirement = IngredientFactory.PlusIngredients[i].MakeClone();
+            
             DrinkToOrder.Recipe.Add(Requirement);
         }
 
@@ -86,22 +88,22 @@ namespace Coffee_Please
                 }
                 if (isMatched == true) //순회 끝난 후 틀린 게 없다면 발동
                 {
-                    Console.WriteLine("최고에요!");
+                    Console.WriteLine("\r최고에요!");
                     GiveMoney();
-                    Console.WriteLine($"손님이 만족하며 떠납니다. [수입 +{Payment}$]\n");
+                    Console.WriteLine($"\r손님이 만족하며 떠납니다. [수입 +{Payment}$]\n");
                     Order();
                 }
                 else
                 {
-                    Console.WriteLine("이게 뭐야?!");
-                    Console.WriteLine($"손님이 불평하며 떠납니다. [수입 없음]\n");
+                    Console.WriteLine("\r이게 뭐야?!");
+                    Console.WriteLine($"\r손님이 불평하며 떠납니다. [수입 없음]\n");
                     Order();
                 }
             }
             else
             {
-                Console.WriteLine("이게 뭐야?!");
-                Console.WriteLine($"손님이 불평하며 떠납니다. [수입 없음]\n");
+                Console.WriteLine("\r이게 뭐야?!");
+                Console.WriteLine($"\r손님이 불평하며 떠납니다. [수입 없음]\n");
                 Order();
             }
         }
