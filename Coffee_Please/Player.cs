@@ -15,8 +15,8 @@ namespace Coffee_Please
                 
 
         public static void MakeMenu()
-        {
-
+        {         
+            Menu.Price = Menu.SetPrice(Menu);
         }
 
         public static void CheckRecipeBook()

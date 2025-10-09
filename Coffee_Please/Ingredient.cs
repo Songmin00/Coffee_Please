@@ -4,13 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Linq;
 using static Coffee_Please.IngredientFactory;
 
 namespace Coffee_Please
 {
     public enum IngredientType //재료 타입(재료 종류 추가 및 수정은 여기로!).
     {
-        Shot, Water, Milk, Ice, Chocolate, Strawberry
+        Shot, Water, Milk, Ice, //첫날 해금 재료
+        MilkFoam, Syrup, //2일차 해금 재료
+        Strawberry, Matcha, //3일차 해금 재료
+        Chocolate, //4일차 해금 재료
+        WheepingCream //5일차 해금 재료
     }
 
     public class IngredientFactory //재료 객체 생성을 전담할 팩토리 클래스.
@@ -18,7 +23,7 @@ namespace Coffee_Please
         public static Dictionary<IngredientType, Ingredient> Ingredients { get; set; }
 
         public static List<IngredientType> PlusType = new List<IngredientType>// 주문 시 추가 가능한 재료 지정은 여기로!
-        {IngredientType.Shot, IngredientType.Ice, IngredientType.Chocolate};
+        {IngredientType.Ice, IngredientType.Syrup, IngredientType.WheepingCream};
 
         public static List<Ingredient> PlusIngredients { get; set; }
 
@@ -113,6 +118,19 @@ namespace Coffee_Please
                 case IngredientType.Strawberry:
                     name = "딸기";
                     break;
+                case IngredientType.MilkFoam:
+                    name = "우유거품";
+                    break;
+                case IngredientType.Syrup:
+                    name = "시럽";
+                    break;
+                case IngredientType.WheepingCream:
+                    name = "휘핑크림";
+                    break;
+                case IngredientType.Matcha:
+                    name = "말차";
+                    break;
+
             }
 
             return name;
@@ -141,6 +159,19 @@ namespace Coffee_Please
                 case IngredientType.Strawberry:
                     ingredient.Price = 3;
                     break;
+                case IngredientType.MilkFoam:
+                    ingredient.Price = 1;
+                    break;
+                case IngredientType.Syrup:
+                    ingredient.Price = 2;
+                    break;
+                case IngredientType.WheepingCream:
+                    ingredient.Price = 2;
+                    break;
+                case IngredientType.Matcha:
+                    ingredient.Price = 3;
+                    break;
+
             }
 
             return ingredient.Price;
@@ -170,7 +201,7 @@ namespace Coffee_Please
                     command.Add(ConsoleKey.UpArrow);
                     command.Add(ConsoleKey.UpArrow);
                     break;
-                case IngredientType.Chocolate: //초콜릿 커맨드 : 좌 우 좌
+                case IngredientType.Matcha: //말차 커맨드 : 좌 우 좌
                     command.Add(ConsoleKey.LeftArrow);
                     command.Add(ConsoleKey.RightArrow);
                     command.Add(ConsoleKey.LeftArrow);
@@ -180,6 +211,20 @@ namespace Coffee_Please
                     command.Add(ConsoleKey.LeftArrow);
                     command.Add(ConsoleKey.RightArrow);
                     break;
+                case IngredientType.MilkFoam: // 우유거품 커맨드 : 하 하
+                    command.Add(ConsoleKey.DownArrow);
+                    command.Add(ConsoleKey.DownArrow);                    
+                    break;
+                case IngredientType.Syrup: // 시럽 커맨드 : 좌 좌
+                    command.Add(ConsoleKey.LeftArrow);
+                    command.Add(ConsoleKey.LeftArrow);                    
+                    break;
+                case IngredientType.Chocolate: // 초콜릿 커맨드 : 상 좌 우
+                    command.Add(ConsoleKey.RightArrow);
+                    command.Add(ConsoleKey.LeftArrow);
+                    command.Add(ConsoleKey.RightArrow);
+                    break;
+
             }
 
             return command;
