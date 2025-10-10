@@ -54,7 +54,7 @@ namespace Coffee_Please
 
 
             public virtual void PutIngredient() //만드는 음료에 재료를 추가하는 매서드.
-            {                
+            {
                 Player.Menu.Recipe.Add(this);
                 Player.Money -= Price;
                 RenderIngredient();
@@ -62,7 +62,10 @@ namespace Coffee_Please
 
             public virtual void RenderIngredient()
             {
-                Console.WriteLine($"\n{Name} 넣겠습니다!");
+                SceneManager.ReadyToShow();
+                Console.Write("                                       ");
+                SceneManager.ReadyToShow();
+                Console.WriteLine($"{Name}  투입!");
             }
         }
 
@@ -70,14 +73,17 @@ namespace Coffee_Please
         {
             public override void RenderIngredient()
             {
-                Console.WriteLine($"\r{Name} 추가하겠습니다!");
+                SceneManager.ReadyToShow();
+                Console.Write("                                       ");
+                SceneManager.ReadyToShow();
+                Console.WriteLine($"{Name}  추가로 투입!");
             }
         }
 
         public void MakeAllIngredients() //재료 객체 종류별로 생성하는 매서드
         {
             for (int i = 0; i < Enum.GetValues(typeof(IngredientType)).Length; i++) //모든 객체 타입을 순회하며
-            {                
+            {
                 Ingredients.Add((IngredientType)i, MakeIngredient((IngredientType)i)); //재료 객체 생성하여 재료 목록에 추가.
                 if (MakeIngredient((IngredientType)i) is PlusIngredient) //해당 타입이 추가재료 타입에도 있다면
                 {
@@ -223,21 +229,33 @@ namespace Coffee_Please
                     break;
                 case IngredientType.MilkFoam: // 우유거품 커맨드 : 하 하
                     command.Add(ConsoleKey.DownArrow);
-                    command.Add(ConsoleKey.DownArrow);                    
+                    command.Add(ConsoleKey.DownArrow);
                     break;
                 case IngredientType.Syrup: // 시럽 커맨드 : 좌 좌
                     command.Add(ConsoleKey.LeftArrow);
-                    command.Add(ConsoleKey.LeftArrow);                    
+                    command.Add(ConsoleKey.LeftArrow);
                     break;
                 case IngredientType.Chocolate: // 초콜릿 커맨드 : 상 좌 우
                     command.Add(ConsoleKey.RightArrow);
                     command.Add(ConsoleKey.LeftArrow);
                     command.Add(ConsoleKey.RightArrow);
                     break;
+                case IngredientType.WheepingCream: // 휘핑크림 커맨드 : 우 우
+                    command.Add(ConsoleKey.RightArrow);
+                    command.Add(ConsoleKey.RightArrow);                    
+                    break;
 
             }
 
             return command;
+        }
+
+        public static void ShowCommand(IngredientType type, int i)
+        {
+            if (Ingredients[type].Command[i] == ConsoleKey.LeftArrow || Ingredients[type].Command[i] == ConsoleKey.RightArrow || Ingredients[type].Command[i] == ConsoleKey.UpArrow || Ingredients[type].Command[i] == ConsoleKey.DownArrow)
+            {
+                Console.WriteLine($"{Ingredients[type].Command[i]}");
+            }
         }
 
     }

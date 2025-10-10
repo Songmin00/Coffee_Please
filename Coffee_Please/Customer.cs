@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Coffee_Please
@@ -25,14 +26,24 @@ namespace Coffee_Please
 
         public static void Order()
         {
+            SceneManager.FarCustomerScene();
+            SceneManager.CloseCustomerScene();
+            SceneManager.ReadyToTalk();
             DrinkToOrder.Recipe.Clear();
-            Player.Menu.Recipe.Clear();
-            Console.WriteLine("손님 등장!");            
+            Player.Menu.Recipe.Clear();                    
             MakeDrinkToOrder();
             MakeRequires();
-            Console.Write($"{DrinkToOrder.Name} 하나 주세요. ");
-            Console.WriteLine($"{Requirement.Name}도 추가해서요.\n");
-
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write($"{DrinkToOrder.Name} ");
+            Console.ResetColor();
+            Console.Write($"하나 주세요. ");
+            if (Requirement != null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"{Requirement.Name}");
+                Console.ResetColor();
+                Console.WriteLine("도 추가해서요!");
+            }            
         }
 
 
@@ -47,29 +58,31 @@ namespace Coffee_Please
                 case 3: orderLock = 3; break;
                 case 4: orderLock = 2; break;
                 default: orderLock = 0; break;
-
             }
-            int i = Random.Next(0, Orderables.Count - orderLock);
-            
+            int i = Random.Next(0, (Orderables.Count - orderLock));            
             DrinkToOrder = Orderables[i].MakeClone();
         }
 
         public static void MakeRequires()//추가재료목록에서 하나 랜덤으로 뽑아서 요구사항에 할당하는 매서드.(전체 추가 재료 종류 수가 바뀔 시 여기를 변경해줘야 합니다!)
-        {            
+        {
             Requirement = null;
-            int orderLock = 0;
-            switch (Gamemanager.Days)
+            int j = Random.Next(0,2);
+            if (j > 0)
             {
-                case 1: orderLock = 2; break;
-                case 2: orderLock = 1; break;
-                case 3: orderLock = 1; break;
-                case 4: orderLock = 1; break;
-                default: orderLock = 0; break;
+
+                int orderLock = 0;
+                switch (Gamemanager.Days)
+                {
+                    case 1: orderLock = 2; break;
+                    case 2: orderLock = 1; break;
+                    case 3: orderLock = 1; break;
+                    case 4: orderLock = 1; break;
+                    default: orderLock = 0; break;
+                }
+                int i = Random.Next(0, IngredientFactory.PlusIngredients.Count - orderLock);
+                Requirement = IngredientFactory.PlusIngredients[i].MakeClone();
+                DrinkToOrder.Recipe.Add(Requirement);
             }
-            int i = Random.Next(0, IngredientFactory.PlusIngredients.Count - orderLock);
-            Requirement = IngredientFactory.PlusIngredients[i].MakeClone();
-            
-            DrinkToOrder.Recipe.Add(Requirement);
         }
 
         public static void CheckMenu()
@@ -88,22 +101,37 @@ namespace Coffee_Please
                 }
                 if (isMatched == true) //순회 끝난 후 틀린 게 없다면 발동
                 {
-                    Console.WriteLine("\r최고에요!");
+                    SceneManager.ReadyToTalk();
+                    Console.WriteLine("                                               ");
+                    SceneManager.ReadyToTalk();
+                    Console.WriteLine("           최고에요!");
                     GiveMoney();
-                    Console.WriteLine($"\r손님이 만족하며 떠납니다. [수입 +{Payment}$]\n");
+                    SceneManager.ReadyToNarration();
+                    Console.WriteLine($"손님이 만족하며 떠납니다. [수입 +{Payment}$]");
+                    Thread.Sleep(2000);
                     Order();
                 }
                 else
                 {
-                    Console.WriteLine("\r이게 뭐야?!");
-                    Console.WriteLine($"\r손님이 불평하며 떠납니다. [수입 없음]\n");
+                    SceneManager.ReadyToTalk();
+                    Console.WriteLine("                                               ");
+                    SceneManager.ReadyToTalk();
+                    Console.WriteLine("           이게 뭐야?!");
+                    SceneManager.ReadyToNarration();
+                    Console.WriteLine($"손님이 불평하며 떠납니다. [수입 없음]");
+                    Thread.Sleep(2000);
                     Order();
                 }
             }
             else
             {
-                Console.WriteLine("\r이게 뭐야?!");
-                Console.WriteLine($"\r손님이 불평하며 떠납니다. [수입 없음]\n");
+                SceneManager.ReadyToTalk();
+                Console.WriteLine("                                               ");
+                SceneManager.ReadyToTalk();
+                Console.WriteLine("           이게 뭐야?!");
+                SceneManager.ReadyToNarration();
+                Console.WriteLine($"손님이 불평하며 떠납니다. [수입 없음]");
+                Thread.Sleep( 2000 );
                 Order();
             }
         }

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8E99F904-467A-4EEF-BB76-BD7DA33032BC}</ProjectGuid>
+    <ProjectGuid>{0E15073E-E939-4D34-A6A3-6E88389FEDC3}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Coffee_Please</RootNamespace>
-    <AssemblyName>Coffee_Please</AssemblyName>
+    <RootNamespace>ConsoleApp1</RootNamespace>
+    <AssemblyName>ConsoleApp1</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,12 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SceneManager.cs" />
-    <Compile Include="Gamemanager.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Customer.cs" />
-    <Compile Include="Drink.cs" />
-    <Compile Include="Ingredient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
